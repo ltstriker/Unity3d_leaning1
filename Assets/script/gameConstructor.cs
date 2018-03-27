@@ -13,10 +13,12 @@ public class gameConstructor : MonoBehaviour {
 
     private int[,] Matrix = new int[3, 3];
     private bool turn;
+    private int count;
 
 	// Use this for initialization
 	void Start () {
         this.Reset();
+        count = 0;
     }
 	
 	// Update is called once per frame
@@ -44,7 +46,7 @@ public class gameConstructor : MonoBehaviour {
             }
         if (finish)
         {
-            GUI.Label(new Rect(350, 350, 200, 100), turn ? "× win!" : "○ win!");
+            GUI.Label(new Rect(350, 350, 200, 100), count>=9?"no winner":(turn ? "× win!" : "○ win!"));
             if (GUI.Button(new Rect(350, 500, 200, 100), "reset"))
             {
                 Reset();
@@ -58,6 +60,7 @@ public class gameConstructor : MonoBehaviour {
         Matrix[x, y] = turn ? -1 : 1;
         int sign = turn ? -1 : 1;
         turn = !turn;
+        count++;
 
         //row
         for(int c1=0;c1<3;c1++)
@@ -121,12 +124,18 @@ public class gameConstructor : MonoBehaviour {
             default:
                 break;
         }
+
+        if((!finish)&&(count>=9))
+        {
+            finish = true;
+        }
     }
 
     void Reset()
     {
         turn = false;
         finish=false;
+        count = 0;
         for(int c1 =0;c1<3;c1++)
         {
             for(int c2=0;c2<3;c2++)
